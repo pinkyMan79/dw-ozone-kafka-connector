@@ -1,0 +1,13 @@
+bootstrap:
+  server:
+    host: localhost:8092
+key:
+  serializer:
+    binary: org
+    string: org
+value:
+  serializer:
+    binary: org
+    string: org
+linger:
+  ms: 200
