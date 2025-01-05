@@ -25,8 +25,18 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
+    public ProducerFactory<String, byte[]> producerFactoryParquet() {
+        return new DefaultKafkaProducerFactory<>(propertySource.forBinaryaAsMap());
+    }
+
+    @Bean
     public KafkaTemplate<String, String> kafkaTemplateJson() {
         return new KafkaTemplate<>(producerFactoryJson());
+    }
+
+    @Bean
+    public KafkaTemplate<String, byte[]> kafkaTemplateBinary() {
+        return new KafkaTemplate<>(producerFactoryParquet());
     }
 
 }

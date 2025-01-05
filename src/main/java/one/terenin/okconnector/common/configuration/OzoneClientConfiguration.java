@@ -3,10 +3,12 @@ package one.terenin.okconnector.common.configuration;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import one.terenin.okconnector.common.OzoneNames;
 import one.terenin.okconnector.common.configuration.property_holder.OzoneConfigurationPropertySource;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.OzoneClientFactory;
+import org.apache.hadoop.ozone.client.OzoneVolume;
 import org.apache.hadoop.ozone.util.ShutdownHookManager;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,7 @@ import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_H
 @Slf4j
 @Configuration
 @AllArgsConstructor
-public class GeneratorConfiguration {
+public class OzoneClientConfiguration {
 
     private final OzoneConfigurationPropertySource source;
 
@@ -30,7 +32,6 @@ public class GeneratorConfiguration {
     public OzoneClient ozoneClient() {
         OzoneConfiguration configuration = getOzoneConfiguration();
         OzoneClient client = OzoneClientFactory.getRpcClient(configuration);
-        // may be ShutdownHookManager instead of application event ?
         ShutdownHookManager.get().addShutdownHook(() -> {
             try {
                 client.close();
@@ -39,6 +40,12 @@ public class GeneratorConfiguration {
             }
         }, DEFAULT_SHUTDOWN_HOOK_PRIORITY);
         return client;
+    }
+
+    @SneakyThrows
+    @Bean
+    public OzoneVolume ozoneVolume(OzoneClient client) {
+        return client.getObjectStore().getVolume(OzoneNames.ozoneVolumeName);
     }
 
     @SneakyThrows

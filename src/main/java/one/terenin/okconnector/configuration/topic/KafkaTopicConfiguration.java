@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
-// 3 partitions bijectively correlated with s networks (0 - reactive, 1 - gRpc, 2 - http3)
+// 3 partitions bijectively correlated with 3 networks (0 - reactive, 1 - gRpc, 2 - http3)
 public class KafkaTopicConfiguration {
 
     @Bean
     public NewTopic stringTopic() {
         return TopicBuilder.name("jsonTopic")
                 .partitions(3)
-                .replicas(1)
+                .replicas(3)
                 .build();
     }
 
@@ -22,7 +22,7 @@ public class KafkaTopicConfiguration {
     public NewTopic binaryTopic() {
         return TopicBuilder.name("parquetTopic")
                 .partitions(3)
-                .replicas(1)
+                .replicas(3)
                 .build();
     }
 
