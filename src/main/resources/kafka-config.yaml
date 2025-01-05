@@ -1,6 +1,6 @@
 bootstrap:
   server:
-    host: localhost:8092
+    host: localhost:9092
 key:
   serializer:
     binary: org
