@@ -41,7 +41,7 @@ public class DataPipelineService {
 
     public void loadDataToKafkaBinary() throws IOException {
         int countToGen = 10;
-        HttpGet get = new HttpGet("http://localhost:8080/datagen/json/" + countToGen);
+        HttpGet get = new HttpGet("http://localhost:8080/datagen/parquet/" + countToGen);
         HttpResponse execute = client.execute(get);
         byteKafkaTemplate.send("parquetTopic", 0, "0", execute.getEntity().getContent().readAllBytes());
         byteKafkaTemplate.send("parquetTopic", 1, "1", execute.getEntity().getContent().readAllBytes());
