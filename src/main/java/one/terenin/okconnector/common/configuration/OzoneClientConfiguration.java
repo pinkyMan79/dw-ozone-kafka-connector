@@ -23,6 +23,7 @@ import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_H
 @Slf4j
 @Configuration
 @AllArgsConstructor
+@ConditionalOnProperty("datagen.ozone")
 public class OzoneClientConfiguration {
 
     private final OzoneConfigurationPropertySource source;
