@@ -1,3 +1,29 @@
 spring:
   application:
     name: ok-connector
+
+ozone:
+  security:
+    enabled: false
+  om:
+    address: "127.0.0.1:9862"
+  default:
+    conf:
+      enable: true
+data:
+  gen:
+    count: 200
+
+bootstrap:
+  server:
+    host: localhost:9092
+key:
+  serializer:
+    binary: org.apache.kafka.common.serialization.StringSerializer
+    string: org.apache.kafka.common.serialization.StringSerializer
+value:
+  serializer:
+    binary: org.apache.kafka.common.serialization.ByteArraySerializer
+    string: org.apache.kafka.common.serialization.StringSerializer
+linger:
+  ms: 200

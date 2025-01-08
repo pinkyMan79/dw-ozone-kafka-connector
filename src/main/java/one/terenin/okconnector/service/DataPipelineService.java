@@ -14,11 +14,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -33,17 +35,28 @@ public class DataPipelineService {
         int countToGen = 10;
         HttpGet get = new HttpGet("http://localhost:8080/datagen/json/" + countToGen);
         HttpResponse execute = client.execute(get);
-        stringKafkaTemplate.send("jsonTopic", 0, "0", new String(execute.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8));
-        stringKafkaTemplate.send("jsonTopic", 1, "1", new String(execute.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8));
-        stringKafkaTemplate.send("jsonTopic", 2, "2", new String(execute.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8));
+        String data = new String(execute.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+        CompletableFuture<SendResult<String, String>> p1 = stringKafkaTemplate.send("jsonTopic",
+                0,
+                "0",
+                data);
+        CompletableFuture<SendResult<String, String>> p2 = stringKafkaTemplate.send("jsonTopic",
+                1,
+                "1",
+                data);
+        CompletableFuture<SendResult<String, String>> p3 = stringKafkaTemplate.send("jsonTopic",
+                2,
+                "2",
+                data);
     }
 
     public void loadDataToKafkaBinary() throws IOException {
         int countToGen = 10;
         HttpGet get = new HttpGet("http://localhost:8080/datagen/parquet/" + countToGen);
         HttpResponse execute = client.execute(get);
-        byteKafkaTemplate.send("parquetTopic", 0, "0", execute.getEntity().getContent().readAllBytes());
-        byteKafkaTemplate.send("parquetTopic", 1, "1", execute.getEntity().getContent().readAllBytes());
-        byteKafkaTemplate.send("parquetTopic", 2, "2", execute.getEntity().getContent().readAllBytes());
+        byte[] bytes = execute.getEntity().getContent().readAllBytes();
+        byteKafkaTemplate.send("parquetTopic", 0, "0", bytes);
+        byteKafkaTemplate.send("parquetTopic", 1, "1", bytes);
+        byteKafkaTemplate.send("parquetTopic", 2, "2", bytes);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:/ozone-connectivity.yaml")
+@PropertySource("classpath:/application.yaml")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OzoneConfigurationPropertySource {
