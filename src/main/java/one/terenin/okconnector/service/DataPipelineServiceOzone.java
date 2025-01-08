@@ -18,7 +18,7 @@ import java.util.Iterator;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@ConditionalOnProperty("datagen.ozone")
+@ConditionalOnProperty("datagen.ozone.enable")
 public class DataPipelineServiceOzone {
 
     private final OzoneVolume ozoneVolume;

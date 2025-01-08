@@ -3,11 +3,11 @@ bootstrap:
     host: localhost:9092
 key:
   serializer:
-    binary: org
-    string: org
+    binary: org.apache.kafka.common.serialization.StringSerializer
+    string: org.apache.kafka.common.serialization.StringSerializer
 value:
   serializer:
-    binary: org
-    string: org
+    binary: org.apache.kafka.common.serialization.ByteArraySerializer
+    string: org.apache.kafka.common.serialization.StringSerializer
 linger:
   ms: 200

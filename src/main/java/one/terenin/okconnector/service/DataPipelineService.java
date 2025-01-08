@@ -23,7 +23,6 @@ import java.util.Iterator;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@ConditionalOnProperty("datagen.ozone")
 public class DataPipelineService {
 
     private final HttpClient client;
@@ -47,6 +46,4 @@ public class DataPipelineService {
         byteKafkaTemplate.send("parquetTopic", 1, "1", execute.getEntity().getContent().readAllBytes());
         byteKafkaTemplate.send("parquetTopic", 2, "2", execute.getEntity().getContent().readAllBytes());
     }
-}
-
 }

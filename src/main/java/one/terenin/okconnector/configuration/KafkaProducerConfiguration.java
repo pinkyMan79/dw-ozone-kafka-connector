@@ -3,6 +3,8 @@ package one.terenin.okconnector.configuration;
 import lombok.RequiredArgsConstructor;
 import one.terenin.okconnector.configuration.propertysource.KafkaConfigurationPropertySource;
 import one.terenin.okconnector.configuration.topic.KafkaTopicConfiguration;
+import org.apache.kafka.common.protocol.types.Field;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -30,13 +32,13 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplateJson() {
-        return new KafkaTemplate<>(producerFactoryJson());
+    public KafkaTemplate<String, String> kafkaTemplateJson(@Qualifier("producerFactoryJson") ProducerFactory<String, String> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
-    public KafkaTemplate<String, byte[]> kafkaTemplateBinary() {
-        return new KafkaTemplate<>(producerFactoryParquet());
+    public KafkaTemplate<String, byte[]> kafkaTemplateBinary(@Qualifier("producerFactoryParquet") ProducerFactory<String, byte[]> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 
 }
